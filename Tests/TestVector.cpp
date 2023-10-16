@@ -41,12 +41,10 @@ TEST(Vector, compare)
     Vector vector({1, 2, 3, 4, 5});
 
     // operator==
-    Vector eq_vector({1, 2, 3, 4, 5});
-    ASSERT_TRUE(eq_vector == vector);
+    ASSERT_TRUE(Vector({1, 2, 3, 4, 5}) == vector);
 
     // operator!=
-    Vector ne_vector({1, 3, 5});
-    ASSERT_TRUE(ne_vector != vector);
+    ASSERT_TRUE(Vector({1, 3, 5}) != vector);
 }
 
 // operator=()
@@ -76,7 +74,7 @@ TEST(Vector, access)
 {
     Vector vector = {1, 2, 3, 4, 5};
 
-    // forward
+    // for
     for (int i = 0; i < vector.size(); ++i)
     {
         ASSERT_EQ(vector[i], i + 1);
@@ -86,6 +84,7 @@ TEST(Vector, access)
     vector[0] = 0;
     ASSERT_EQ(vector[0], 0);
 
+    // check bounds
     ASSERT_THROW(vector[5], std::out_of_range);
 }
 
@@ -116,10 +115,13 @@ TEST(Vector, iterator)
 // to_string()
 TEST(Vector, to_string)
 {
+    // empty vector
     ASSERT_EQ(Vector().to_string(), "[]"); // string == char*, use eq
 
+    // one element
     ASSERT_EQ(Vector({1}).to_string(), "[1.000000]");
 
+    // many elements
     ASSERT_EQ(Vector({1, 2, 3, 4, 5}).to_string(), "[1.000000, 2.000000, 3.000000, 4.000000, 5.000000]");
 }
 

@@ -213,6 +213,13 @@ public:
  * Non-member functions
  */
 
+/**
+ * @brief Output vector data to the specified output stream.
+ *
+ * @param os an output stream
+ * @param vector the vector to be printed to the output stream
+ * @return self reference of the output stream
+ */
 std::ostream& operator<<(std::ostream& os, const Vector& vector);
 
 } // namespace mla
