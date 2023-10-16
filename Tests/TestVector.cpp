@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace mla;
+using mla::Vector;
 
 // constructor destructor size() is_empty()
 TEST(Vector, basics)
