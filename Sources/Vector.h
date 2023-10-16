@@ -32,9 +32,38 @@ public:
      */
 
     /**
-     * @brief Construct a new Vector object.
+     * @brief Construct a new vector object.
      */
     Vector();
+
+    /**
+     * @brief Construct a vector based on the given initializer list.
+     *
+     * @param il initializer list
+     */
+    Vector(const std::initializer_list<double>& il);
+
+    /**
+     * @brief Construct a vector with n identical elements.
+     *
+     * @param n number of elements
+     * @param element the element
+     */
+    Vector(int n, double element);
+
+    /**
+     * @brief Copy constructor.
+     *
+     * @param that another vector
+     */
+    Vector(const Vector& that);
+
+    /**
+     * @brief Move constructor.
+     *
+     * @param that another vector
+     */
+    Vector(Vector&& that);
 
     /*
      * Examination (will not change the object itself)
@@ -46,6 +75,13 @@ public:
      * @return the number of elements in the vetor
      */
     int size() const;
+
+    /**
+     * @brief Return true if the vector contains no elements.
+     *
+     * @return true if the vector contains no elements
+     */
+    bool is_empty() const;
 };
 
 } // namespace mla
