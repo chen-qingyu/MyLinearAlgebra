@@ -184,6 +184,27 @@ public:
      */
     std::string to_string() const;
 
+    /**
+     * @brief Calculate the length of the vector.
+     *
+     * @return the length of the vector
+     */
+    double length() const;
+
+    /**
+     * @brief Calculate the number of leading zeros for this vector.
+     *
+     * @return the number of leading zeros
+     */
+    int count_leading_zeros() const;
+
+    /**
+     * @brief Determine if it is a zero vector.
+     *
+     * @return true if it is a zero vector
+     */
+    bool is_zero() const;
+
     /*
      * Manipulation (will change the object itself)
      */
@@ -194,7 +215,7 @@ public:
      * @param element element to be appended to the vector
      * @return self reference
      */
-    Vector& operator+=(double element);
+    Vector& append(double element);
 
     /**
      * @brief Append the specified vector to the end of the vector.
@@ -202,15 +223,94 @@ public:
      * @param vector vector to be appended to the vector
      * @return self reference
      */
-    Vector& operator+=(const Vector& vector);
+    Vector& append(const Vector& vector);
 
-    /*
-     * Production (will produce new object)
+    /**
+     * @brief Unitize this vector.
+     *
+     * @return the unitized vector
      */
+    Vector& unitize();
 };
 
 /*
- * Non-member functions
+ * Arithmetic
+ */
+
+/**
+ * @brief Return the addition of two vectors.
+ *
+ * @param a non-empty vector
+ * @param b another vector of the same size as a
+ * @return the addition of two vectors
+ */
+Vector operator+(const Vector& a, const Vector& b);
+
+/**
+ * @brief Return the difference of two vectors.
+ *
+ * @param a non-empty vector
+ * @param b another vector of the same size as a
+ * @return the difference of two vectors
+ */
+Vector operator-(const Vector& a, const Vector& b);
+
+/**
+ * @brief Return the scalar multiplication of vector and number.
+ *
+ * @param v non-empty vector
+ * @param c a number
+ * @return the scalar multiplication of vector and number
+ */
+Vector operator*(const Vector& v, const double& c);
+
+/**
+ * @brief Return the scalar multiplication of vector and number.
+ *
+ * @param c a number
+ * @param v non-empty vector
+ * @return the scalar multiplication of vector and number
+ */
+Vector operator*(const double& c, const Vector& v);
+
+/**
+ * @brief Return the dot product (scalar product, inner product) of two vectors.
+ *
+ * @param a non-empty vector
+ * @param b another vector of the same size as a
+ * @return the dot product of two vectors
+ */
+double dot(const Vector& a, const Vector& b);
+
+/**
+ * @brief Return the cross product of two vectors.
+ *
+ * @param a a three dimensional vector
+ * @param b a three dimensional vector
+ * @return the cross product of two vectors.
+ */
+Vector cross(const Vector& a, const Vector& b);
+
+/**
+ * @brief Determine whether two vectors are orthogonal.
+ *
+ * @param a non-empty vector
+ * @param b another vector of the same size as a
+ * @return true if the two vectors are orthogonal
+ */
+bool is_orthogonal(const Vector& a, const Vector& b);
+
+/**
+ * @brief Determine whether two vectors are paralle.
+ *
+ * @param a non-empty vector
+ * @param b another vector of the same size as a
+ * @return true if the two vectors are paralle
+ */
+bool is_parallel(const Vector& a, const Vector& b);
+
+/*
+ * Print
  */
 
 /**

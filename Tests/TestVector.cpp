@@ -2,7 +2,9 @@
 
 #include <gtest/gtest.h>
 
-using mla::Vector;
+#include "tools.hpp"
+
+using namespace mla;
 
 // constructor destructor size() is_empty()
 TEST(Vector, basics)
@@ -85,7 +87,7 @@ TEST(Vector, access)
     ASSERT_EQ(vector[0], 0);
 
     // check bounds
-    ASSERT_THROW(vector[5], std::out_of_range);
+    MY_ASSERT_THROWS_MESSAGE(vector[5], std::runtime_error, "Error: Index out of range.");
 }
 
 // begin() end()
@@ -125,20 +127,137 @@ TEST(Vector, to_string)
     ASSERT_EQ(Vector({1, 2, 3, 4, 5}).to_string(), "[1.000000, 2.000000, 3.000000, 4.000000, 5.000000]");
 }
 
-// operator+=()
+// length()
+TEST(Vector, length)
+{
+    ASSERT_EQ(Vector({0}).length(), 0);
+    ASSERT_EQ(Vector({1}).length(), 1);
+    ASSERT_EQ(Vector({3, 4}).length(), 5);
+}
+
+// count_leading_zeros()
+TEST(Vector, count_leading_zeros)
+{
+    ASSERT_EQ(Vector({0}).count_leading_zeros(), 1);
+    ASSERT_EQ(Vector({0, 1}).count_leading_zeros(), 1);
+    ASSERT_EQ(Vector({0, 0}).count_leading_zeros(), 2);
+    ASSERT_EQ(Vector({0, 0, 1}).count_leading_zeros(), 2);
+    ASSERT_EQ(Vector({0, 0, 0, 1, 2, 3}).count_leading_zeros(), 3);
+}
+
+// is_zero()
+TEST(Vector, is_zero)
+{
+    ASSERT_TRUE(Vector({0}).is_zero());
+    ASSERT_TRUE(Vector({0, 0, 0}).is_zero());
+
+    ASSERT_FALSE(Vector({1}).is_zero());
+    ASSERT_FALSE(Vector({0, 0, 1}).is_zero());
+}
+
+// append()
 TEST(Vector, append)
 {
     Vector vector;
 
     // append element
-    ASSERT_EQ(vector += 2, Vector({2}));
-    ASSERT_EQ(vector += 3, Vector({2, 3}));
-    ASSERT_EQ(vector += 3, Vector({2, 3, 3}));
-    ASSERT_EQ(vector += 3, Vector({2, 3, 3, 3}));
-    ASSERT_EQ(vector += 3, Vector({2, 3, 3, 3, 3}));
+    ASSERT_EQ(vector.append(2), Vector({2}));
+    ASSERT_EQ(vector.append(3), Vector({2, 3}));
+    ASSERT_EQ(vector.append(3), Vector({2, 3, 3}));
+    ASSERT_EQ(vector.append(3), Vector({2, 3, 3, 3}));
+    ASSERT_EQ(vector.append(3), Vector({2, 3, 3, 3, 3}));
 
     // append vector
-    ASSERT_EQ(vector += vector, Vector({2, 3, 3, 3, 3, 2, 3, 3, 3, 3}));
-    ASSERT_EQ(vector += vector, Vector({2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 2, 3, 3, 3, 3}));
-    ASSERT_EQ(vector += Vector({0, 0}), Vector({2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 0, 0}));
+    ASSERT_EQ(vector.append(vector), Vector({2, 3, 3, 3, 3, 2, 3, 3, 3, 3}));
+    ASSERT_EQ(vector.append(vector), Vector({2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 2, 3, 3, 3, 3}));
+    ASSERT_EQ(vector.append({0, 0}), Vector({2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 2, 3, 3, 3, 3, 0, 0}));
+}
+
+// unitize()
+TEST(Vector, unitize)
+{
+    ASSERT_EQ(Vector({5}).unitize(), Vector({1}));
+    ASSERT_EQ(Vector({1, 1}).unitize(), Vector({1 / std::sqrt(2), 1 / std::sqrt(2)}));
+    MY_ASSERT_THROWS_MESSAGE(Vector({0}).unitize(), std::runtime_error, "Error: The zero vector can not be unitized.");
+}
+
+// operator+()
+TEST(Vector, addition)
+{
+    ASSERT_EQ(Vector({1}) + Vector({1}), Vector({2}));
+    ASSERT_EQ(Vector({1, 2, 3}) + Vector({4, 5, 6}), Vector({5, 7, 9}));
+    ASSERT_EQ(Vector({1, 2}) + Vector({1, 2}) + Vector({1, 2}), Vector({3, 6}));
+    MY_ASSERT_THROWS_MESSAGE(Vector() + Vector(), std::runtime_error, "Error: The container is empty.");
+    MY_ASSERT_THROWS_MESSAGE(Vector({1}) + Vector({1, 2}), std::runtime_error, "Error: Two vectors with different sizes.");
+}
+
+// operator-()
+TEST(Vector, difference)
+{
+    ASSERT_EQ(Vector({1}) - Vector({1}), Vector({0}));
+    ASSERT_EQ(Vector({1, 2, 3}) - Vector({4, 5, 6}), Vector({-3, -3, -3}));
+    ASSERT_EQ(Vector({1, 2}) - Vector({1, 2}) - Vector({1, 2}), Vector({-1, -2}));
+    MY_ASSERT_THROWS_MESSAGE(Vector() - Vector(), std::runtime_error, "Error: The container is empty.");
+    MY_ASSERT_THROWS_MESSAGE(Vector({1}) - Vector({1, 2}), std::runtime_error, "Error: Two vectors with different sizes.");
+}
+
+// operator*()
+TEST(Vector, scalar_multiplication)
+{
+    ASSERT_EQ(Vector({1}) * 1, Vector({1}));
+    ASSERT_EQ(Vector({1, 2, 3}) * 2, Vector({2, 4, 6}));
+    ASSERT_EQ(Vector({1, 2}) * 2 * 0.4, Vector({0.8, 1.6}));
+
+    ASSERT_EQ(1 * Vector({1}), Vector({1}));
+    ASSERT_EQ(2 * Vector({1, 2, 3}), Vector({2, 4, 6}));
+    ASSERT_EQ(2 * 0.4 * Vector({1, 2}), Vector({0.8, 1.6}));
+
+    ASSERT_EQ(2 * Vector({1, 2}) * 4, Vector({8, 16}));
+
+    MY_ASSERT_THROWS_MESSAGE(Vector() * 1, std::runtime_error, "Error: The container is empty.");
+}
+
+// dot()
+TEST(Vector, dot)
+{
+    ASSERT_EQ(dot(Vector({1}), Vector({1})), 1);
+    ASSERT_EQ(dot(Vector({1, 2, 3}), Vector({4, 5, 6})), 32);
+    MY_ASSERT_THROWS_MESSAGE(dot(Vector(), Vector()), std::runtime_error, "Error: The container is empty.");
+    MY_ASSERT_THROWS_MESSAGE(dot(Vector({1}), Vector({1, 2})), std::runtime_error, "Error: Two vectors with different sizes.");
+}
+
+// cross()
+TEST(Vector, cross)
+{
+    ASSERT_EQ(cross(Vector({1, 2}), Vector({3, 4})), Vector({-2}));
+    ASSERT_EQ(cross(Vector({1, 2, 3}), Vector({4, 5, 6})), Vector({-3, 6, -3}));
+    MY_ASSERT_THROWS_MESSAGE(cross(Vector({1}), Vector({1})), std::runtime_error, "Error: Incompatible dimensions for cross product.");
+}
+
+// is_orthogonal()
+TEST(Vector, is_orthogonal)
+{
+    Vector zero = {0, 0};
+    ASSERT_TRUE(is_orthogonal(zero, Vector({0, 0})));
+    ASSERT_TRUE(is_orthogonal(zero, Vector({1, 1})));
+    ASSERT_TRUE(is_orthogonal(zero, Vector({2, 3})));
+
+    Vector one = {1, 1};
+    ASSERT_TRUE(is_orthogonal(one, Vector({1, -1})));
+    ASSERT_TRUE(is_orthogonal(one, Vector({-1, 1})));
+    ASSERT_TRUE(is_orthogonal(one, Vector({-2, 2})));
+}
+
+// is_parallel()
+TEST(Vector, is_parallel)
+{
+    Vector zero = {0, 0};
+    ASSERT_TRUE(is_parallel(zero, Vector({0, 0})));
+    ASSERT_TRUE(is_parallel(zero, Vector({1, 1})));
+    ASSERT_TRUE(is_parallel(zero, Vector({2, 3})));
+
+    Vector one = {1, 1};
+    ASSERT_TRUE(is_parallel(one, Vector({1, 1})));
+    ASSERT_TRUE(is_parallel(one, Vector({-1, -1})));
+    ASSERT_TRUE(is_parallel(one, Vector({2, 2})));
 }
