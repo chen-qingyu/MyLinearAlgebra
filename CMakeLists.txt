@@ -4,6 +4,9 @@ project(MyLinearAlgebra)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+
 include(FetchContent)
 FetchContent_Declare(
   googletest
@@ -15,13 +18,9 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 enable_testing()
-
-add_executable(TestVector Tests/TestVector.cpp Sources/Vector.cpp)
-
-target_link_libraries(
-  TestVector
-  GTest::gtest_main
-)
-
 include(GoogleTest)
-gtest_discover_tests(TestVector)
+
+file(GLOB_RECURSE tests "Tests/*.cpp" "Sources/*.cpp")
+add_executable(Tests ${tests})
+target_link_libraries(Tests GTest::gtest_main)
+gtest_discover_tests(Tests)
