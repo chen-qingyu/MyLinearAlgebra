@@ -351,7 +351,7 @@ Matrix operator*(const Matrix& m, const double c);
  * @param m a matrix
  * @return the scalar multiplication of matrix and number
  */
-Matrix operator*(const double& c, const Matrix& m);
+Matrix operator*(const double c, const Matrix& m);
 
 /**
  * @brief Return the product of two matrices.

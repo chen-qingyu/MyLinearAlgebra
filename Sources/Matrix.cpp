@@ -334,7 +334,7 @@ Matrix operator*(const Matrix& m, const double c)
     return Matrix(m) *= c;
 }
 
-Matrix operator*(const double& c, const Matrix& m)
+Matrix operator*(const double c, const Matrix& m)
 {
     return m * c;
 }
