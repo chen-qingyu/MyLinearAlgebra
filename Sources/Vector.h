@@ -251,6 +251,14 @@ public:
     Vector& operator-=(const Vector& vector);
 
     /**
+     * @brief Hadamard product (entrywise product).
+     *
+     * @param vector another vector
+     * @return self reference
+     */
+    Vector& operator*=(const Vector& vector);
+
+    /**
      * @brief Scalar multiplication.
      *
      * @param c a number
@@ -280,6 +288,15 @@ Vector operator+(const Vector& a, const Vector& b);
  * @return the difference of two vectors
  */
 Vector operator-(const Vector& a, const Vector& b);
+
+/**
+ * @brief Return the Hadamard product (entrywise product) of two vectors.
+ *
+ * @param a non-empty vector
+ * @param b another vector of the same size as a
+ * @return the Hadamard product (entrywise product) of two vectors
+ */
+Vector operator*(const Vector& a, const Vector& b);
 
 /**
  * @brief Return the scalar multiplication of vector and number.

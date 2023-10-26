@@ -213,6 +213,18 @@ Vector& Vector::operator-=(const Vector& vector)
     return *this;
 }
 
+Vector& Vector::operator*=(const Vector& vector)
+{
+    utility::check_empty(size());
+    utility::check_size(size(), vector.size());
+
+    for (int i = 0; i < size(); i++)
+    {
+        (*this)[i] *= vector[i];
+    }
+    return *this;
+}
+
 Vector& Vector::operator*=(const double c)
 {
     utility::check_empty(size());
@@ -232,6 +244,11 @@ Vector operator+(const Vector& a, const Vector& b)
 Vector operator-(const Vector& a, const Vector& b)
 {
     return Vector(a) -= b;
+}
+
+Vector operator*(const Vector& a, const Vector& b)
+{
+    return Vector(a) *= b;
 }
 
 Vector operator*(const Vector& v, const double c)

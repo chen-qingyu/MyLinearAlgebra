@@ -200,6 +200,13 @@ TEST(Vector, difference)
 }
 
 // operator*()
+TEST(Vector, entrywise)
+{
+    ASSERT_EQ(Vector({1}) * Vector({1}), Vector({1}));
+    ASSERT_EQ(Vector({1, 2, 3}) * Vector({4, 5, 6}), Vector({4, 10, 18}));
+}
+
+// operator*()
 TEST(Vector, scalar_multiplication)
 {
     ASSERT_EQ(Vector({1}) * 1, Vector({1}));
