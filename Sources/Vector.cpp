@@ -123,7 +123,7 @@ std::string Vector::to_string() const
         {
             return s.append("]");
         }
-        s.append(", ");
+        s.append(" ");
     }
     return s;
 }
