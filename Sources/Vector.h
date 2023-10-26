@@ -24,6 +24,8 @@ namespace mla
  */
 class Vector
 {
+    friend class Matrix;
+
 private:
     // Vector elements.
     std::vector<double> elements_;
@@ -228,9 +230,33 @@ public:
     /**
      * @brief Unitize this vector.
      *
-     * @return the unitized vector
+     * @return self reference
      */
     Vector& unitize();
+
+    /**
+     * @brief Addition.
+     *
+     * @param vector another vector
+     * @return self reference
+     */
+    Vector& operator+=(const Vector& vector);
+
+    /**
+     * @brief Difference.
+     *
+     * @param vector another vector
+     * @return self reference
+     */
+    Vector& operator-=(const Vector& vector);
+
+    /**
+     * @brief Scalar multiplication.
+     *
+     * @param c a number
+     * @return self reference
+     */
+    Vector& operator*=(const double c);
 };
 
 /*
@@ -262,7 +288,7 @@ Vector operator-(const Vector& a, const Vector& b);
  * @param c a number
  * @return the scalar multiplication of vector and number
  */
-Vector operator*(const Vector& v, const double& c);
+Vector operator*(const Vector& v, const double c);
 
 /**
  * @brief Return the scalar multiplication of vector and number.
@@ -271,7 +297,7 @@ Vector operator*(const Vector& v, const double& c);
  * @param v non-empty vector
  * @return the scalar multiplication of vector and number
  */
-Vector operator*(const double& c, const Vector& v);
+Vector operator*(const double c, const Vector& v);
 
 /**
  * @brief Return the dot product (scalar product, inner product) of two vectors.

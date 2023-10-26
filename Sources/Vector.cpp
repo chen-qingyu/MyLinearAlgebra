@@ -189,45 +189,57 @@ Vector& Vector::unitize()
     return *this = *this * (1.0 / length());
 }
 
+Vector& Vector::operator+=(const Vector& vector)
+{
+    utility::check_empty(size());
+    utility::check_size(size(), vector.size());
+
+    for (int i = 0; i < size(); i++)
+    {
+        (*this)[i] += vector[i];
+    }
+    return *this;
+}
+
+Vector& Vector::operator-=(const Vector& vector)
+{
+    utility::check_empty(size());
+    utility::check_size(size(), vector.size());
+
+    for (int i = 0; i < size(); i++)
+    {
+        (*this)[i] -= vector[i];
+    }
+    return *this;
+}
+
+Vector& Vector::operator*=(const double c)
+{
+    utility::check_empty(size());
+
+    for (int i = 0; i < size(); i++)
+    {
+        (*this)[i] *= c;
+    }
+    return *this;
+}
+
 Vector operator+(const Vector& a, const Vector& b)
 {
-    utility::check_empty(a.size());
-    utility::check_size(a.size(), b.size());
-
-    Vector result = a;
-    for (int i = 0; i < a.size(); i++)
-    {
-        result[i] += b[i];
-    }
-    return result;
+    return Vector(a) += b;
 }
 
 Vector operator-(const Vector& a, const Vector& b)
 {
-    utility::check_empty(a.size());
-    utility::check_size(a.size(), b.size());
-
-    Vector result = a;
-    for (int i = 0; i < a.size(); i++)
-    {
-        result[i] -= b[i];
-    }
-    return result;
+    return Vector(a) -= b;
 }
 
-Vector operator*(const Vector& v, const double& c)
+Vector operator*(const Vector& v, const double c)
 {
-    utility::check_empty(v.size());
-
-    Vector result = v;
-    for (int i = 0; i < v.size(); i++)
-    {
-        result[i] *= c;
-    }
-    return result;
+    return Vector(v) *= c;
 }
 
-Vector operator*(const double& c, const Vector& v)
+Vector operator*(const double c, const Vector& v)
 {
     return v * c;
 }
