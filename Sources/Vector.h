@@ -2,7 +2,7 @@
  * @file Vector.h
  * @author 青羽 (chen_qingyu@qq.com, https://chen-qingyu.github.io/)
  * @brief Vector class.
- * @version 0.1
+ * @version 1.0
  * @date 2023.10.16
  *
  * @copyright Copyright (c) 2023
@@ -13,10 +13,10 @@
 
 #include <ostream> // std::ostream
 #include <string>  // std::string
-#include <utility> // std::initializer_list std::move
+#include <utility> // std::initializer_list
 #include <vector>  // std::vector
 
-namespace mla // My Linear Algebra
+namespace mla
 {
 
 /**
@@ -164,9 +164,9 @@ public:
      */
 
     /**
-     * @brief Return the number of elements in the vetor.
+     * @brief Return the number of elements in the vector.
      *
-     * @return the number of elements in the vetor
+     * @return the number of elements in the vector
      */
     int size() const;
 

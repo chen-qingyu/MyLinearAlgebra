@@ -1,6 +1,7 @@
 #include "Vector.h"
 
-#include <cmath> // std::sqrt
+#include <climits> // INT_MAX
+#include <cmath>   // std::sqrt
 
 #include "utility.hpp"
 
