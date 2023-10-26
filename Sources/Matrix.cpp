@@ -2,6 +2,8 @@
 
 #include "utility.hpp"
 
+#include <algorithm> // std::sort
+
 namespace mla
 {
 
@@ -149,6 +151,20 @@ std::string Matrix::to_string() const
     return s;
 }
 
+int Matrix::rank() const
+{
+    Matrix echelon = Matrix(*this).transform_row_echelon();
+    int zeros = 0;
+    for (const auto& r : echelon.rows_)
+    {
+        if (r.is_zero())
+        {
+            ++zeros;
+        }
+    }
+    return row_size() - zeros;
+}
+
 Matrix& Matrix::append_row(const Matrix& matrix)
 {
     utility::check_size(col_size(), matrix.col_size());
@@ -210,6 +226,50 @@ Matrix& Matrix::operator*=(const double c)
     {
         (*this)[r] *= c;
     }
+    return *this;
+}
+
+Matrix& Matrix::E(int i, int j)
+{
+    utility::swap(rows_[i], rows_[j]);
+    return *this;
+}
+
+Matrix& Matrix::E(int i, double k)
+{
+    rows_[i] *= k;
+    return *this;
+}
+
+Matrix& Matrix::E(int i, int j, double k)
+{
+    rows_[i] += rows_[j] * k;
+    return *this;
+}
+
+Matrix& Matrix::transform_row_echelon()
+{
+    // step 1: Gaussian elimination
+    for (int i = 0; i < row_size(); ++i)
+    {
+        int j = 0;
+        while (j < col_size() && rows_[i][j] == 0)
+        {
+            ++j;
+        }
+        for (int k = i + 1; k < row_size(); ++k)
+        {
+            if (j < col_size() && rows_[i][j] != 0)
+            {
+                E(k, i, -(rows_[k][j] / rows_[i][j]));
+            }
+        }
+    }
+
+    // step 2: Transform to the row echelon form. It's so elegant, I'm a genius haha.
+    std::sort(rows_.begin(), rows_.end(), [](const Vector& v1, const Vector& v2) -> bool
+              { return v1.count_leading_zeros() < v2.count_leading_zeros(); });
+
     return *this;
 }
 

@@ -182,6 +182,13 @@ public:
      */
     std::string to_string() const;
 
+    /**
+     * @brief Calculate the rank of this matrix.
+     *
+     * @return the rank of this matrix
+     */
+    int rank() const;
+
     /*
      * Manipulation (will change the object itself)
      */
@@ -233,6 +240,41 @@ public:
      * @return self reference
      */
     Matrix& operator*=(const double c);
+
+    /**
+     * @brief Elementary Row Operations: Row Swap.
+     *
+     * @param i index of the first row
+     * @param j index of the second row
+     * @return self reference
+     */
+    Matrix& E(int i, int j);
+
+    /**
+     * @brief Elementary Row Operations: Scalar Multiplication.
+     *
+     * @param i index of the row
+     * @param k multiplication factor
+     * @return self reference
+     */
+    Matrix& E(int i, double k);
+
+    /**
+     * @brief Elementary Row Operations: Row Sum.
+     *
+     * @param i index of the row to be changed
+     * @param j index of the row to be multiplied
+     * @param k multiplication factor
+     * @return self reference
+     */
+    Matrix& E(int i, int j, double k);
+
+    /**
+     * @brief Transform this matrix to general row echelon form.
+     *
+     * @return self reference
+     */
+    Matrix& transform_row_echelon();
 
     /*
      * Production (will produce new object)

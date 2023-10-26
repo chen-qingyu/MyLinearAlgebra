@@ -126,6 +126,16 @@ TEST(Matrix, to_string)
     ASSERT_EQ(Matrix({{1, 2, 3}, {4, 5, 6}}).to_string(), "[1.000000 2.000000 3.000000;\n 4.000000 5.000000 6.000000]");
 }
 
+// rank()
+TEST(Matrix, rank)
+{
+    ASSERT_EQ(Matrix(2, 2, 1).rank(), 1);
+    ASSERT_EQ(Matrix({{1, 2, 3}, {4, 5, 6}}).rank(), 2);
+    ASSERT_EQ(Matrix({{1, 2}, {3, 4}, {5, 6}}).rank(), 2);
+    ASSERT_EQ(Matrix({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}).rank(), 2);
+    ASSERT_EQ(Matrix({{1, 2, 3}, {4, 5, 6}, {7, 8, 0}}).rank(), 3);
+}
+
 // append_row() append_col()
 TEST(Matrix, append)
 {
@@ -134,6 +144,23 @@ TEST(Matrix, append)
 
     ASSERT_EQ(Matrix({{1, 2}, {3, 4}}).append_col(Matrix(2, 2, 0)), Matrix({{1, 2, 0, 0}, {3, 4, 0, 0}}));
     ASSERT_EQ(Matrix({{1, 2, 3, 4, 5}}).append_col(Matrix({{6, 7, 8, 9, 10}})), Matrix({{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}));
+}
+
+// E()
+TEST(Matrix, elementary_row_operations)
+{
+    Matrix matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    ASSERT_EQ(matrix.E(0, 1), Matrix({{4, 5, 6}, {1, 2, 3}, {7, 8, 9}}));
+    ASSERT_EQ(matrix.E(1, 2.0), Matrix({{4, 5, 6}, {2, 4, 6}, {7, 8, 9}}));
+    ASSERT_EQ(matrix.E(0, 1, -1), Matrix({{2, 1, 0}, {2, 4, 6}, {7, 8, 9}}));
+}
+
+// transform_row_echelon()
+TEST(Matrix, transform_row_echelon)
+{
+    ASSERT_EQ(Matrix(2, 2, 1).transform_row_echelon(), Matrix({{1, 1}, {0, 0}}));
+    ASSERT_EQ(Matrix({{1, 2, 3}, {4, 5, 6}}).transform_row_echelon(), Matrix({{1, 2, 3}, {0, -3, -6}}));
+    ASSERT_EQ(Matrix({{1, 2}, {3, 4}, {5, 6}}).transform_row_echelon(), Matrix({{1, 2}, {0, -2}, {0, 0}}));
 }
 
 // split_row() split_col()
@@ -146,6 +173,13 @@ TEST(Matrix, split)
 
     ASSERT_EQ(matrix.split_col(1).first, Matrix({{1}, {3}, {5}}));
     ASSERT_EQ(matrix.split_col(1).second, Matrix({{2}, {4}, {6}}));
+}
+
+// transpose()
+TEST(Matrix, transpose)
+{
+    ASSERT_EQ(Matrix(2, 3, 1).transpose(), Matrix(3, 2, 1));
+    ASSERT_EQ(Matrix(1, 3, 3).transpose(), Matrix(3, 1, 3));
 }
 
 // operator+()
