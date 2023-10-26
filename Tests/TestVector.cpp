@@ -256,8 +256,8 @@ TEST(Vector, is_parallel)
     ASSERT_TRUE(is_parallel(zero, Vector({1, 1})));
     ASSERT_TRUE(is_parallel(zero, Vector({2, 3})));
 
-    Vector one = {1, 1};
-    ASSERT_TRUE(is_parallel(one, Vector({1, 1})));
-    ASSERT_TRUE(is_parallel(one, Vector({-1, -1})));
-    ASSERT_TRUE(is_parallel(one, Vector({2, 2})));
+    Vector one = {3, 4};
+    ASSERT_TRUE(is_parallel(one, Vector({3, 4})));
+    ASSERT_TRUE(is_parallel(one, Vector({-3, -4})));
+    ASSERT_TRUE(is_parallel(one, Vector({6, 8})));
 }
