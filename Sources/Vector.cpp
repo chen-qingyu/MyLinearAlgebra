@@ -99,7 +99,7 @@ std::vector<double>::const_iterator Vector::end() const
 
 int Vector::size() const
 {
-    return (int)elements_.size();
+    return int(elements_.size());
 }
 
 bool Vector::is_empty() const

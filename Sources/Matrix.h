@@ -2,7 +2,7 @@
  * @file Matrix.h
  * @author 青羽 (chen_qingyu@qq.com, https://chen-qingyu.github.io/)
  * @brief Matrix class.
- * @version 0.1
+ * @version 1.0
  * @date 2023.10.26
  *
  * @copyright Copyright (c) 2023
@@ -43,7 +43,7 @@ public:
     Matrix(const std::initializer_list<Vector>& il);
 
     /**
-     * @brief Create a matrix with row x col identical elements.
+     * @brief Construct a matrix with row x col identical elements.
      *
      * @param row number of rows
      * @param col number of columns

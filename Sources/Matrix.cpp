@@ -13,14 +13,13 @@ Matrix::Matrix()
 }
 
 Matrix::Matrix(const std::initializer_list<Vector>& il)
+    : rows_(il.begin(), il.end())
 {
     // the number of elements in each row needs to be equal
     for (const auto& row : il)
     {
         utility::check_size(row.size(), il.begin()->size());
     }
-
-    rows_.insert(rows_.end(), il.begin(), il.end());
 }
 
 Matrix::Matrix(int row, int col, double element)
@@ -120,7 +119,7 @@ std::vector<Vector>::const_iterator Matrix::end() const
 
 int Matrix::row_size() const
 {
-    return (int)rows_.size();
+    return int(rows_.size());
 }
 
 int Matrix::col_size() const
