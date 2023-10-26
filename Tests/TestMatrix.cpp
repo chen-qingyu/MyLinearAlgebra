@@ -125,3 +125,66 @@ TEST(Matrix, to_string)
     // many elements
     ASSERT_EQ(Matrix({{1, 2, 3}, {4, 5, 6}}).to_string(), "[1.000000 2.000000 3.000000;\n 4.000000 5.000000 6.000000]");
 }
+
+// append_row() append_col()
+TEST(Matrix, append)
+{
+    ASSERT_EQ(Matrix({{1, 2}, {3, 4}}).append_row(Matrix(2, 2, 0)), Matrix({{1, 2}, {3, 4}, {0, 0}, {0, 0}}));
+    ASSERT_EQ(Matrix({{1, 2, 3, 4, 5}}).append_row(Matrix({{6, 7, 8, 9, 10}})), Matrix({{1, 2, 3, 4, 5}, {6, 7, 8, 9, 10}}));
+
+    ASSERT_EQ(Matrix({{1, 2}, {3, 4}}).append_col(Matrix(2, 2, 0)), Matrix({{1, 2, 0, 0}, {3, 4, 0, 0}}));
+    ASSERT_EQ(Matrix({{1, 2, 3, 4, 5}}).append_col(Matrix({{6, 7, 8, 9, 10}})), Matrix({{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}));
+}
+
+// split_row() split_col()
+TEST(Matrix, split)
+{
+    Matrix matrix = {{1, 2}, {3, 4}, {5, 6}};
+
+    ASSERT_EQ(matrix.split_row(1).first, Matrix({{1, 2}}));
+    ASSERT_EQ(matrix.split_row(1).second, Matrix({{3, 4}, {5, 6}}));
+
+    ASSERT_EQ(matrix.split_col(1).first, Matrix({{1}, {3}, {5}}));
+    ASSERT_EQ(matrix.split_col(1).second, Matrix({{2}, {4}, {6}}));
+}
+
+// operator+()
+TEST(Matrix, addition)
+{
+    ASSERT_EQ(Matrix(2, 3, 1) + Matrix(2, 3, 2), Matrix(2, 3, 3));
+    ASSERT_EQ(Matrix({{1, 2}, {3, 4}}) + Matrix({{-1, -1}, {-1, -1}}), Matrix({{0, 1}, {2, 3}}));
+}
+
+// operator-()
+TEST(Matrix, difference)
+{
+    ASSERT_EQ(Matrix(2, 3, 1) - Matrix(2, 3, 2), Matrix(2, 3, -1));
+    ASSERT_EQ(Matrix({{1, 2}, {3, 4}}) - Matrix({{-1, -1}, {-1, -1}}), Matrix({{2, 3}, {4, 5}}));
+}
+
+// operator*()
+TEST(Matrix, entrywise)
+{
+    ASSERT_EQ(Matrix(2, 3, 1) * Matrix(2, 3, 2), Matrix(2, 3, 2));
+    ASSERT_EQ(Matrix({{1, 2}, {3, 4}}) * Matrix({{-1, -1}, {-1, -1}}), Matrix({{-1, -2}, {-3, -4}}));
+}
+
+// operator*()
+TEST(Matrix, scalar_multiplication)
+{
+    ASSERT_EQ(Matrix(2, 3, 1) * 2, Matrix(2, 3, 2));
+    ASSERT_EQ(Matrix({{1, 2}, {3, 4}}) * 3, Matrix({{3, 6}, {9, 12}}));
+
+    ASSERT_EQ(2 * Matrix(2, 3, 1), Matrix(2, 3, 2));
+    ASSERT_EQ(3 * Matrix({{1, 2}, {3, 4}}), Matrix({{3, 6}, {9, 12}}));
+
+    ASSERT_EQ(3 * Matrix({{1, 2}, {3, 4}}) * 0.5, Matrix({{1.5, 3}, {4.5, 6}}));
+}
+
+// dot()
+TEST(Matrix, dot)
+{
+    ASSERT_EQ(dot(Matrix(2, 2, 1), Matrix(2, 2, 2)), Matrix(2, 2, 4));
+    ASSERT_EQ(dot(Matrix(1, 3, 1), Matrix(3, 1, 1)), Matrix(1, 1, 3));
+    MY_ASSERT_THROW_MESSAGE(dot(Matrix(1, 3, 1), Matrix(1, 3, 1)), std::runtime_error, "Error: The dimensions mismatch.");
+}

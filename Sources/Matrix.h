@@ -70,18 +70,18 @@ public:
      */
 
     /**
-     * @brief Check whether two matrixs are equal.
+     * @brief Check whether two matrices are equal.
      *
      * @param that another matrix
-     * @return true if two matrixs are equal
+     * @return true if two matrices are equal
      */
     bool operator==(const Matrix& that) const;
 
     /**
-     * @brief Check whether two matrixs are not equal.
+     * @brief Check whether two matrices are not equal.
      *
      * @param that another matrix
-     * @return true if two matrixs are not equal
+     * @return true if two matrices are not equal
      */
     bool operator!=(const Matrix& that) const;
 
@@ -185,11 +185,140 @@ public:
     /*
      * Manipulation (will change the object itself)
      */
+
+    /**
+     * @brief Expand this matrix by rows.
+     *
+     * @param matrix another matrix
+     * @return self reference
+     */
+    Matrix& append_row(const Matrix& matrix);
+
+    /**
+     * @brief Expand this matrix by columns.
+     *
+     * @param matrix another matrix
+     * @return self reference
+     */
+    Matrix& append_col(const Matrix& matrix);
+
+    /**
+     * @brief Addition.
+     *
+     * @param matrix another matrix
+     * @return self reference
+     */
+    Matrix& operator+=(const Matrix& matrix);
+
+    /**
+     * @brief Difference.
+     *
+     * @param matrix another matrix
+     * @return self reference
+     */
+    Matrix& operator-=(const Matrix& matrix);
+
+    /**
+     * @brief Hadamard product (entrywise product).
+     *
+     * @param matrix another matrix
+     * @return self reference
+     */
+    Matrix& operator*=(const Matrix& matrix);
+
+    /**
+     * @brief Scalar multiplication.
+     *
+     * @param c a number
+     * @return self reference
+     */
+    Matrix& operator*=(const double c);
+
+    /*
+     * Production (will produce new object)
+     */
+
+    /**
+     * @brief Split this matrix by rows.
+     *
+     * @param n the row index
+     * @return split matrix pair
+     */
+    std::pair<Matrix, Matrix> split_row(int n) const;
+
+    /**
+     * @brief Split this matrix by columns.
+     *
+     * @param n the column index
+     * @return split matrix pair
+     */
+    std::pair<Matrix, Matrix> split_col(int n) const;
+
+    /**
+     * @brief Returns the transpose of the matrix.
+     *
+     * @return the transpose of the matrix
+     */
+    Matrix transpose() const;
 };
 
 /*
  * Arithmetic
  */
+
+/**
+ * @brief Return the addition of two matrices.
+ *
+ * @param a a matrix
+ * @param b another matrix of the same size as a
+ * @return the addition of two matrices
+ */
+Matrix operator+(const Matrix& a, const Matrix& b);
+
+/**
+ * @brief Return the difference of two matrices.
+ *
+ * @param a a matrix
+ * @param b another matrix of the same size as a
+ * @return the difference of two matrices
+ */
+Matrix operator-(const Matrix& a, const Matrix& b);
+
+/**
+ * @brief Return the Hadamard product (entrywise product) of two matrices.
+ *
+ * @param a a matrix
+ * @param b another matrix of the same size as a
+ * @return the Hadamard product (entrywise product) of two matrices
+ */
+Matrix operator*(const Matrix& a, const Matrix& b);
+
+/**
+ * @brief Return the scalar multiplication of matrix and number.
+ *
+ * @param m a matrix
+ * @param c a number
+ * @return the scalar multiplication of matrix and number
+ */
+Matrix operator*(const Matrix& m, const double c);
+
+/**
+ * @brief Return the scalar multiplication of matrix and number.
+ *
+ * @param c a number
+ * @param m a matrix
+ * @return the scalar multiplication of matrix and number
+ */
+Matrix operator*(const double& c, const Matrix& m);
+
+/**
+ * @brief Return the product of two matrices.
+ *
+ * @param a a matrix (m rows, k cols)
+ * @param b another matrix (k rows, n cols)
+ * @return the product of two matrices (m rows, n cols)
+ */
+Matrix dot(const Matrix& a, const Matrix& b);
 
 /*
  * Print

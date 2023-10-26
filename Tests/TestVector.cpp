@@ -186,7 +186,7 @@ TEST(Vector, addition)
     ASSERT_EQ(Vector({1, 2, 3}) + Vector({4, 5, 6}), Vector({5, 7, 9}));
     ASSERT_EQ(Vector({1, 2}) + Vector({1, 2}) + Vector({1, 2}), Vector({3, 6}));
     MY_ASSERT_THROW_MESSAGE(Vector() + Vector(), std::runtime_error, "Error: The container is empty.");
-    MY_ASSERT_THROW_MESSAGE(Vector({1}) + Vector({1, 2}), std::runtime_error, "Error: Two vectors with different sizes.");
+    MY_ASSERT_THROW_MESSAGE(Vector({1}) + Vector({1, 2}), std::runtime_error, "Error: The dimensions mismatch.");
 }
 
 // operator-()
@@ -196,7 +196,7 @@ TEST(Vector, difference)
     ASSERT_EQ(Vector({1, 2, 3}) - Vector({4, 5, 6}), Vector({-3, -3, -3}));
     ASSERT_EQ(Vector({1, 2}) - Vector({1, 2}) - Vector({1, 2}), Vector({-1, -2}));
     MY_ASSERT_THROW_MESSAGE(Vector() - Vector(), std::runtime_error, "Error: The container is empty.");
-    MY_ASSERT_THROW_MESSAGE(Vector({1}) - Vector({1, 2}), std::runtime_error, "Error: Two vectors with different sizes.");
+    MY_ASSERT_THROW_MESSAGE(Vector({1}) - Vector({1, 2}), std::runtime_error, "Error: The dimensions mismatch.");
 }
 
 // operator*()
@@ -228,7 +228,7 @@ TEST(Vector, dot)
     ASSERT_EQ(dot(Vector({1}), Vector({1})), 1);
     ASSERT_EQ(dot(Vector({1, 2, 3}), Vector({4, 5, 6})), 32);
     MY_ASSERT_THROW_MESSAGE(dot(Vector(), Vector()), std::runtime_error, "Error: The container is empty.");
-    MY_ASSERT_THROW_MESSAGE(dot(Vector({1}), Vector({1, 2})), std::runtime_error, "Error: Two vectors with different sizes.");
+    MY_ASSERT_THROW_MESSAGE(dot(Vector({1}), Vector({1, 2})), std::runtime_error, "Error: The dimensions mismatch.");
 }
 
 // cross()

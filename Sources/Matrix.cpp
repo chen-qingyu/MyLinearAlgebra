@@ -149,6 +149,152 @@ std::string Matrix::to_string() const
     return s;
 }
 
+Matrix& Matrix::append_row(const Matrix& matrix)
+{
+    utility::check_size(col_size(), matrix.col_size());
+
+    rows_.insert(rows_.end(), matrix.rows_.begin(), matrix.rows_.end());
+    return *this;
+}
+
+Matrix& Matrix::append_col(const Matrix& matrix)
+{
+    utility::check_size(row_size(), matrix.row_size());
+
+    for (int i = 0; i < row_size(); i++)
+    {
+        rows_[i].append(matrix[i]);
+    }
+    return *this;
+}
+
+Matrix& Matrix::operator+=(const Matrix& matrix)
+{
+    utility::check_size(row_size(), matrix.row_size());
+    utility::check_size(col_size(), matrix.col_size());
+
+    for (int r = 0; r < row_size(); r++)
+    {
+        (*this)[r] += matrix[r];
+    }
+    return *this;
+}
+
+Matrix& Matrix::operator-=(const Matrix& matrix)
+{
+    utility::check_size(row_size(), matrix.row_size());
+    utility::check_size(col_size(), matrix.col_size());
+
+    for (int r = 0; r < row_size(); r++)
+    {
+        (*this)[r] -= matrix[r];
+    }
+    return *this;
+}
+
+Matrix& Matrix::operator*=(const Matrix& matrix)
+{
+    utility::check_size(row_size(), matrix.row_size());
+    utility::check_size(col_size(), matrix.col_size());
+
+    for (int r = 0; r < row_size(); r++)
+    {
+        (*this)[r] *= matrix[r];
+    }
+    return *this;
+}
+
+Matrix& Matrix::operator*=(const double c)
+{
+    for (int r = 0; r < row_size(); r++)
+    {
+        (*this)[r] *= c;
+    }
+    return *this;
+}
+
+std::pair<Matrix, Matrix> Matrix::split_row(int n) const
+{
+    utility::check_bounds(n, 0, row_size());
+
+    Matrix first, second;
+    first.rows_.assign(rows_.begin(), rows_.begin() + n);
+    second.rows_.assign(rows_.begin() + n, rows_.end());
+
+    return std::make_pair(first, second);
+}
+
+std::pair<Matrix, Matrix> Matrix::split_col(int n) const
+{
+    utility::check_bounds(n, 0, col_size());
+
+    Matrix first, second;
+    first.rows_.resize(row_size());
+    second.rows_.resize(row_size());
+    for (int r = 0; r < row_size(); r++)
+    {
+        first.rows_[r].elements_.assign(rows_[r].begin(), rows_[r].begin() + n);
+        second.rows_[r].elements_.assign(rows_[r].begin() + n, rows_[r].end());
+    }
+
+    return std::make_pair(first, second);
+}
+
+Matrix Matrix::transpose() const
+{
+    Matrix result(col_size(), row_size(), 0);
+
+    for (int i = 0; i < row_size(); i++)
+    {
+        for (int j = 0; j < col_size(); j++)
+        {
+            result[j][i] = (*this)[i][j];
+        }
+    }
+    return result;
+}
+
+Matrix operator+(const Matrix& a, const Matrix& b)
+{
+    return Matrix(a) += b;
+}
+
+Matrix operator-(const Matrix& a, const Matrix& b)
+{
+    return Matrix(a) -= b;
+}
+
+Matrix operator*(const Matrix& a, const Matrix& b)
+{
+    return Matrix(a) *= b;
+}
+
+Matrix operator*(const Matrix& m, const double c)
+{
+    return Matrix(m) *= c;
+}
+
+Matrix operator*(const double& c, const Matrix& m)
+{
+    return m * c;
+}
+
+Matrix dot(const Matrix& a, const Matrix& b)
+{
+    utility::check_size(a.col_size(), b.row_size());
+
+    Matrix result(a.row_size(), b.col_size(), 0);
+    Matrix mt = b.transpose();
+    for (int r = 0; r < a.row_size(); r++)
+    {
+        for (int c = 0; c < b.col_size(); c++)
+        {
+            result[r][c] = dot(a[r], mt[c]);
+        }
+    }
+    return result;
+}
+
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
 {
     return os << matrix.to_string();

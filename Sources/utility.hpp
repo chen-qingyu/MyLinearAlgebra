@@ -47,7 +47,7 @@ static inline void check_size(int s1, int s2)
 {
     if (s1 != s2)
     {
-        throw std::runtime_error("Error: Two vectors with different sizes.");
+        throw std::runtime_error("Error: The dimensions mismatch.");
     }
 }
 
