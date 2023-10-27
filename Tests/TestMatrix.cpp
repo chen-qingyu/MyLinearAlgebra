@@ -136,6 +136,22 @@ TEST(Matrix, rank)
     ASSERT_EQ(Matrix({{1, 2, 3}, {4, 5, 6}, {7, 8, 0}}).rank(), 3);
 }
 
+// det()
+TEST(Matrix, det)
+{
+    ASSERT_EQ(Matrix({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}).det(), 0);
+    ASSERT_EQ(Matrix({{1, 2, 3}, {4, 5, 6}, {7, 8, 0}}).det(), 27);
+    MY_ASSERT_THROW_MESSAGE(Matrix({{1, 2, 3}, {4, 5, 6}}).det(), std::runtime_error, "Error: The dimensions mismatch.");
+}
+
+// inv()
+TEST(Matrix, inv)
+{
+    ASSERT_EQ(Matrix({{1, 2}, {3, 4}}).inv(), Matrix({{-2.0, 1.0}, {3.0 / 2.0, -1.0 / 2.0}}));
+    MY_ASSERT_THROW_MESSAGE(Matrix({{1, 2, 3}, {4, 5, 6}}).inv(), std::runtime_error, "Error: The dimensions mismatch.");
+    MY_ASSERT_THROW_MESSAGE(Matrix({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}).inv(), std::runtime_error, "Error: Singular matrix.");
+}
+
 // append_row() append_col()
 TEST(Matrix, append)
 {
@@ -163,6 +179,18 @@ TEST(Matrix, transform_row_echelon)
     ASSERT_EQ(Matrix({{1, 2}, {3, 4}, {5, 6}}).transform_row_echelon(), Matrix({{1, 2}, {0, -2}, {0, 0}}));
 }
 
+// map()
+TEST(Matrix, map)
+{
+    ASSERT_EQ(Matrix(2, 2, 1).map([](int r, int c, double& e)
+                                  { e *= 4; }),
+              Matrix(2, 2, 4));
+
+    ASSERT_EQ(Matrix(2, 2, 0).map([](int r, int c, double& e)
+                                  { e = r + c; }),
+              Matrix({{0, 1}, {1, 2}}));
+}
+
 // split_row() split_col()
 TEST(Matrix, split)
 {
@@ -180,6 +208,20 @@ TEST(Matrix, transpose)
 {
     ASSERT_EQ(Matrix(2, 3, 1).transpose(), Matrix(3, 2, 1));
     ASSERT_EQ(Matrix(1, 3, 3).transpose(), Matrix(3, 1, 3));
+}
+
+// eye()
+TEST(Matrix, eye)
+{
+    Matrix eye = Matrix::eye(5);
+
+    for (int r = 0; r < 5; r++)
+    {
+        for (int c = 0; c < 5; c++)
+        {
+            ASSERT_EQ(eye[r][c], r == c ? 1 : 0);
+        }
+    }
 }
 
 // operator+()

@@ -164,6 +164,52 @@ int Matrix::rank() const
     return row_size() - zeros;
 }
 
+double Matrix::det() const
+{
+    // check square matrix
+    utility::check_size(row_size(), col_size());
+
+    Matrix echelon = Matrix(*this).transform_row_echelon();
+    double determinant = 1;
+    for (int i = 0; i < echelon.row_size(); i++)
+    {
+        determinant *= echelon[i][i];
+    }
+    return determinant;
+}
+
+Matrix Matrix::inv() const
+{
+    // check square matrix
+    utility::check_size(row_size(), col_size());
+
+    // check invertible matrix
+    if (rank() != row_size())
+    {
+        throw std::runtime_error("Error: Singular matrix.");
+    }
+
+    // 1. 生成同阶单位阵 E
+    // 2. 生成增广矩阵 A:E
+    // 3. 将 A:E 化为阶梯矩阵
+    Matrix echelon = Matrix(*this).append_col(Matrix::eye(row_size())).transform_row_echelon();
+    // 4. 将 A 化为对角矩阵
+    for (int c = 0; c < echelon.row_size(); ++c)
+    {
+        for (int r = 0; r < c; ++r)
+        {
+            echelon.E(r, c, -(echelon[r][c] / echelon[c][c]));
+        }
+    }
+    // 5. 将 A 化为单位阵
+    for (int r = 0; r < echelon.row_size(); ++r)
+    {
+        echelon.E(r, (1.0 / echelon[r][r]));
+    }
+    // 6. 此时原先的 E 即为 A 的逆
+    return echelon.split_col(row_size()).second;
+}
+
 Matrix& Matrix::append_row(const Matrix& matrix)
 {
     utility::check_size(col_size(), matrix.col_size());
@@ -272,6 +318,18 @@ Matrix& Matrix::transform_row_echelon()
     return *this;
 }
 
+Matrix& Matrix::map(void (*action)(int row, int col, double& e))
+{
+    for (int r = 0; r < row_size(); r++)
+    {
+        for (int c = 0; c < col_size(); c++)
+        {
+            action(r, c, rows_[r][c]);
+        }
+    }
+    return *this;
+}
+
 std::pair<Matrix, Matrix> Matrix::split_row(int n) const
 {
     utility::check_bounds(n, 0, row_size());
@@ -311,6 +369,12 @@ Matrix Matrix::transpose() const
         }
     }
     return result;
+}
+
+Matrix Matrix::eye(int n)
+{
+    return Matrix(n, n, 0).map([](int r, int c, double& e)
+                               { e = (r == c ? 1 : 0); });
 }
 
 Matrix operator+(const Matrix& a, const Matrix& b)

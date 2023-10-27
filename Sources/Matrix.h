@@ -189,6 +189,20 @@ public:
      */
     int rank() const;
 
+    /**
+     * @brief Compute the determinant of this matrix.
+     *
+     * @return the determinant of this matrix
+     */
+    double det() const;
+
+    /**
+     * @brief Compute the inverse of this matrix.
+     *
+     * @return the inverse of this matrix
+     */
+    Matrix inv() const;
+
     /*
      * Manipulation (will change the object itself)
      */
@@ -276,6 +290,14 @@ public:
      */
     Matrix& transform_row_echelon();
 
+    /**
+     * @brief Traverse matrix elements and perform action.
+     *
+     * @param action a function takes 3 args: row, col, element ref
+     * @return self reference
+     */
+    Matrix& map(void (*action)(int row, int col, double& e));
+
     /*
      * Production (will produce new object)
      */
@@ -302,6 +324,14 @@ public:
      * @return the transpose of the matrix
      */
     Matrix transpose() const;
+
+    /**
+     * @brief Generate an n-order unit matrix.
+     *
+     * @param n number of rows (and columns)
+     * @return an n-order unit matrix
+     */
+    static Matrix eye(int n);
 };
 
 /*
