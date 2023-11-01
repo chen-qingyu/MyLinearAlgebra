@@ -2,7 +2,7 @@
  * @file mla.h
  * @author 青羽 (chen_qingyu@qq.com, https://chen-qingyu.github.io/)
  * @brief Unified header file.
- * @version 0.1
+ * @version 1.0
  * @date 2023.11.01
  *
  * @copyright Copyright (c) 2023
