@@ -175,7 +175,7 @@ TEST(Vector, append)
 TEST(Vector, unitize)
 {
     ASSERT_EQ(Vector({5}).unitize(), Vector({1}));
-    ASSERT_EQ(Vector({1, 1}).unitize(), Vector({1 / std::sqrt(2), 1 / std::sqrt(2)}));
+    ASSERT_EQ(Vector({1, 1}).unitize(), Vector({0.7071067811865475, 0.7071067811865475}));
     MY_ASSERT_THROW_MESSAGE(Vector({0}).unitize(), std::runtime_error, "Error: The zero vector can not be unitized.");
 }
 

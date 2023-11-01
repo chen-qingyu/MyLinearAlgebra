@@ -147,7 +147,7 @@ TEST(Matrix, det)
 // inv()
 TEST(Matrix, inv)
 {
-    ASSERT_EQ(Matrix({{1, 2}, {3, 4}}).inv(), Matrix({{-2.0, 1.0}, {3.0 / 2.0, -1.0 / 2.0}}));
+    ASSERT_EQ(Matrix({{1, 2}, {3, 4}}).inv(), Matrix({{-2.0, 1.0}, {1.5, -0.5}}));
     MY_ASSERT_THROW_MESSAGE(Matrix({{1, 2, 3}, {4, 5, 6}}).inv(), std::runtime_error, "Error: The dimensions mismatch.");
     MY_ASSERT_THROW_MESSAGE(Matrix({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}).inv(), std::runtime_error, "Error: Singular matrix.");
 }
