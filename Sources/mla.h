@@ -16,6 +16,9 @@
 #include "Matrix.h"
 #include "Vector.h"
 
+#else
+#error "Require at least C++17."
+
 #endif // C++17
 
 #endif // MLA_H
