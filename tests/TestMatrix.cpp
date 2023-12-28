@@ -1,4 +1,4 @@
-#include "../Sources/Matrix.h"
+#include "../sources/Matrix.h"
 
 #include "tool.hpp"
 
