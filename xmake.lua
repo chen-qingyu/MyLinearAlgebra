@@ -8,6 +8,9 @@ end
 
 target("tests")
     set_kind("binary")
+    add_headerfiles("sources/*.h")
+    add_headerfiles("sources/*.hpp")
+    add_headerfiles("tests/*.hpp")
     add_files("sources/*.cpp")
     add_files("tests/*.cpp")
     add_packages("gtest")
